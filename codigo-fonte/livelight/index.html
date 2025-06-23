@@ -1,1 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-br">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Light - Calculadora de IMC e Calorias</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="Logo Live Light" class="logo-img">
+                <h1>Live Light</h1>
+                <p>Sua jornada para uma vida mais saudável</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#calculadoras" class="active">Calculadoras</a></li>
+                    <li><a href="#historico">Histórico</a></li>
+                    <li><a href="#metas">Metas</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                    <li><a href="#mensagens" id="nav-mensagens" class="hidden">Mensagens</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <button id="login-btn" class="btn btn-outline">Entrar</button>
+                <button id="register-btn" class="btn btn-primary">Cadastrar</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Modal de Login -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Entrar</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-senha">Senha</label>
+                        <input type="password" id="login-senha" name="login-senha" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+                <p class="modal-footer">
+                    Não tem uma conta? <a href="#" id="switch-to-register">Cadastre-se</a><br>
+                    <a href="#" id="forgot-password">Esqueceu sua senha?</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Modal de Cadastro -->
+        <div id="register-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Cadastrar</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-nome">Nome Completo</label>
+                        <input type="text" id="register-nome" name="register-nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" name="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-senha">Senha</label>
+                        <input type="password" id="register-senha" name="register-senha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirmar-senha">Confirmar Senha</label>
+                        <input type="password" id="register-confirmar-senha" name="register-confirmar-senha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-tipo">Tipo de Usuário</label>
+                        <select id="register-tipo" name="register-tipo" required>
+                            <option value="comum">Usuário Comum</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Palavras-chave para recuperação de senha -->
+                    <div class="security-questions">
+                        <h4>Palavras-chave para recuperação de senha</h4>
+                        <div class="form-group">
+                            <label for="palavra-chave-1">Primeira palavra-chave</label>
+                            <input type="text" id="palavra-chave-1" name="palavra-chave-1" required 
+                                   placeholder="Ex: Nome do seu primeiro animal de estimação">
+                        </div>
+                        <div class="form-group">
+                            <label for="palavra-chave-2">Segunda palavra-chave</label>
+                            <input type="text" id="palavra-chave-2" name="palavra-chave-2" required 
+                                   placeholder="Ex: Nome da sua cidade natal">
+                        </div>
+                        <div class="form-group">
+                            <label for="palavra-chave-3">Terceira palavra-chave</label>
+                            <input type="text" id="palavra-chave-3" name="palavra-chave-3" required 
+                                   placeholder="Ex: Nome da sua comida favorita">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </form>
+                <p class="modal-footer">Já tem uma conta? <a href="#" id="switch-to-login">Entrar</a></p>
+            </div>
+        </div>
+
+        <!-- Modal de Recuperação de Senha -->
+        <div id="password-recovery-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Recuperar Senha</h2>
+                <form id="password-recovery-form">
+                    <div class="form-group">
+                        <label for="recovery-email">Email</label>
+                        <input type="email" id="recovery-email" name="recovery-email" required>
+                    </div>
+                    <button type="button" id="verify-email-btn" class="btn btn-primary">Verificar Email</button>
+                    
+                    <div id="security-questions-section" class="hidden">
+                        <h4>Responda suas palavras-chave de segurança</h4>
+                        <div class="form-group">
+                            <label for="recovery-palavra-1">Primeira palavra-chave</label>
+                            <input type="text" id="recovery-palavra-1" name="recovery-palavra-1">
+                        </div>
+                        <div class="form-group">
+                            <label for="recovery-palavra-2">Segunda palavra-chave</label>
+                            <input type="text" id="recovery-palavra-2" name="recovery-palavra-2">
+                        </div>
+                        <div class="form-group">
+                            <label for="recovery-palavra-3">Terceira palavra-chave</label>
+                            <input type="text" id="recovery-palavra-3" name="recovery-palavra-3">
+                        </div>
+                        <button type="button" id="verify-keywords-btn" class="btn btn-primary">Verificar Palavras-chave</button>
+                    </div>
+                    
+                    <div id="new-password-section" class="hidden">
+                        <h4>Definir Nova Senha</h4>
+                        <div class="form-group">
+                            <label for="new-password">Nova Senha</label>
+                            <input type="password" id="new-password" name="new-password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-new-password">Confirmar Nova Senha</label>
+                            <input type="password" id="confirm-new-password" name="confirm-new-password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Alterar Senha</button>
+                    </div>
+                </form>
+                <p class="modal-footer"><a href="#" id="back-to-login">Voltar ao login</a></p>
+            </div>
+        </div>
+
+        <section id="hero" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Monitore sua saúde de forma simples e eficaz</h2>
+                    <p>Calcule seu IMC, descubra suas necessidades calóricas e acompanhe seu progresso.</p>
+                    <button class="btn btn-primary btn-large" id="start-btn">Começar agora</button>
+                </div>
+                <div class="hero-image">
+                    <img src="images/logo.png" alt="Pessoa saudável">
+                </div>
+            </div>
+        </section>
+
+        <section id="calculadoras" class="calculadoras">
+            <div class="container">
+                <h2 class="section-title">Calculadoras</h2>
+                <div class="calculators-container">
+                    <div class="calculator-card">
+                        <h3>Calculadora de IMC</h3>
+                        <p>Descubra seu Índice de Massa Corporal e entenda o que ele significa para sua saúde.</p>
+                        <form id="imc-form">
+                            <div class="form-group">
+                                <label for="peso">Peso (kg)</label>
+                                <input type="number" id="peso" name="peso" step="0.1" required placeholder="Ex: 70.5">
+                            </div>
+                            <div class="form-group">
+                                <label for="altura">Altura (cm)</label>
+                                <input type="number" id="altura" name="altura" required placeholder="Ex: 170">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calcular IMC</button>
+                        </form>
+                        <div id="imc-resultado" class="resultado-container hidden">
+                            <h4>Seu IMC:</h4>
+                            <div class="resultado-valor" id="imc-valor">0</div>
+                            <div class="resultado-categoria" id="imc-categoria">-</div>
+                            <p id="imc-descricao"></p>
+                            <div class="dicas-container">
+                                <h5>Dicas personalizadas:</h5>
+                                <ul id="imc-dicas" class="dicas-lista"></ul>
+                            </div>
+                            <button id="salvar-imc" class="btn btn-outline">Salvar no histórico</button>
+                        </div>
+                    </div>
+
+                    <div class="calculator-card">
+                        <h3>Calculadora de Calorias</h3>
+                        <p>Descubra quantas calorias você deve consumir diariamente para atingir seus objetivos.</p>
+                        <form id="calorias-form">
+                            <div class="form-group">
+                                <label for="idade">Idade</label>
+                                <input type="number" id="idade" name="idade" required placeholder="Ex: 30">
+                            </div>
+                            <div class="form-group">
+                                <label for="genero">Gênero</label>
+                                <select id="genero" name="genero" required>
+                                    <option value="">Selecione</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="feminino">Feminino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="peso-cal">Peso (kg)</label>
+                                <input type="number" id="peso-cal" name="peso-cal" step="0.1" required
+                                    placeholder="Ex: 70.5">
+                            </div>
+                            <div class="form-group">
+                                <label for="altura-cal">Altura (cm)</label>
+                                <input type="number" id="altura-cal" name="altura-cal" required placeholder="Ex: 170">
+                            </div>
+                            <div class="form-group">
+                                <label for="atividade">Nível de Atividade</label>
+                                <select id="atividade" name="atividade" required>
+                                    <option value="">Selecione</option>
+                                    <option value="sedentario">Sedentário</option>
+                                    <option value="leve">Levemente ativo</option>
+                                    <option value="moderado">Moderadamente ativo</option>
+                                    <option value="ativo">Muito ativo</option>
+                                    <option value="extremo">Extremamente ativo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo">Objetivo</label>
+                                <select id="objetivo" name="objetivo" required>
+                                    <option value="">Selecione</option>
+                                    <option value="perder">Perder peso</option>
+                                    <option value="manter">Manter peso</option>
+                                    <option value="ganhar">Ganhar peso</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calcular Calorias</button>
+                        </form>
+                        <div id="calorias-resultado" class="resultado-container hidden">
+                            <h4>Suas Calorias Diárias:</h4>
+                            <div class="resultado-valor" id="calorias-valor">0</div>
+                            <p id="calorias-descricao"></p>
+                            <div class="dicas-container">
+                                <h5>Dicas personalizadas:</h5>
+                                <ul id="calorias-dicas" class="dicas-lista"></ul>
+                            </div>
+                            <button id="salvar-calorias" class="btn btn-outline">Salvar no histórico</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="historico" class="historico">
+            <div class="container">
+                <h2 class="section-title">Seu Histórico</h2>
+                <div class="historico-tabs">
+                    <button class="tab-btn active" data-tab="imc-historico">IMC</button>
+                    <button class="tab-btn" data-tab="calorias-historico">Calorias</button>
+                </div>
+                <div class="tab-content active" id="imc-historico">
+                    <div class="grafico-container">
+                        <canvas id="imc-grafico"></canvas>
+                    </div>
+                    <div class="tabela-container">
+                        <table id="imc-tabela">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>IMC</th>
+                                    <th>Categoria</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão inseridos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-content" id="calorias-historico">
+                    <div class="grafico-container">
+                        <canvas id="calorias-grafico"></canvas>
+                    </div>
+                    <div class="tabela-container">
+                        <table id="calorias-tabela">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Calorias</th>
+                                    <th>Objetivo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão inseridos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="metas" class="metas">
+            <div class="container">
+                <h2 class="section-title">Suas Metas</h2>
+                <div class="metas-container">
+                    <div class="meta-card">
+                        <h3>Definir Meta de Peso</h3>
+                        <form id="meta-peso-form">
+                            <div class="form-group">
+                                <label for="peso-atual">Peso Atual (kg)</label>
+                                <input type="number" id="peso-atual" name="peso-atual" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="peso-meta">Peso Desejado (kg)</label>
+                                <input type="number" id="peso-meta" name="peso-meta" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="data-meta">Data Limite</label>
+                                <input type="date" id="data-meta" name="data-meta" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Definir Meta</button>
+                        </form>
+                    </div>
+                    <div class="meta-card">
+                        <h3>Progresso da Meta</h3>
+                        <div id="meta-progresso" class="meta-progresso">
+                            <div class="progresso-info">
+                                <p>Sem meta definida</p>
+                            </div>
+                            <div class="progresso-barra-container hidden">
+                                <div class="progresso-barra">
+                                    <div class="progresso-preenchimento" style="width: 0%"></div>
+                                </div>
+                                <div class="progresso-valores">
+                                    <span id="progresso-inicial">0 kg</span>
+                                    <span id="progresso-atual">0 kg</span>
+                                    <span id="progresso-meta">0 kg</span>
+                                </div>
+                                <p id="progresso-dias">0 dias restantes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="contato">
+            <div class="container">
+                <h2 class="section-title">Contato com Profissionais</h2>
+                <div class="contato-container">
+                    <div class="contato-form">
+                        <h3>Envie uma mensagem para um profissional</h3>
+                        <form id="contato-form">
+                            <div class="form-group">
+                                <label for="profissional">Tipo de Profissional</label>
+                                <select id="profissional" name="profissional" required>
+                                    <option value="">Selecione</option>
+                                    <option value="nutricionista">Nutricionista</option>
+                                    <option value="personal">Personal Trainer</option>
+                                    <option value="medico">Médico</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="assunto">Assunto</label>
+                                <input type="text" id="assunto" name="assunto" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensagem">Mensagem</label>
+                                <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                            </div>
+                            
+                            <!-- Novos campos de contato -->
+                            <div class="form-group">
+                                <label for="tipo-contato">Forma de Contato Preferida</label>
+                                <select id="tipo-contato" name="tipo-contato" required>
+                                    <option value="">Selecione</option>
+                                    <option value="email">Email</option>
+                                    <option value="telefone">Telefone</option>
+                                    <option value="ambos">Ambos</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contato-email">Seu Email</label>
+                                <input type="email" id="contato-email" name="contato-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contato-telefone">Seu Telefone</label>
+                                <input type="tel" id="contato-telefone" name="contato-telefone" 
+                                       placeholder="(11) 99999-9999">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                        </form>
+                    </div>
+                    <div class="contato-info">
+                        <h3>Profissionais Disponíveis</h3>
+                        <div class="profissionais-lista">
+                            <div class="profissional-card">
+                                <img src="images/nutricionista.png" alt="Dr. Ana Silva" class="profissional-img">
+                                <div class="profissional-info">
+                                    <h4>Dra. Ana Silva</h4>
+                                    <p>Nutricionista</p>
+                                    <p>Especialista em nutrição esportiva</p>
+                                </div>
+                            </div>
+                            <div class="profissional-card">
+                                <img src="images/personal-trainer.png" alt="Dr. Carlos Santos" class="profissional-img">
+                                <div class="profissional-info">
+                                    <h4>Dr. Carlos Santos</h4>
+                                    <p>Personal Trainer</p>
+                                    <p>Especialista em treinamento funcional</p>
+                                </div>
+                            </div>
+                            <div class="profissional-card">
+                                <img src="images/medica.png" alt="Dra. Mariana Costa" class="profissional-img">
+                                <div class="profissional-info">
+                                    <h4>Dra. Mariana Costa</h4>
+                                    <p>Médica</p>
+                                    <p>Especialista em medicina esportiva</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nova seção para profissionais visualizarem mensagens -->
+        <section id="mensagens" class="mensagens hidden">
+            <div class="container">
+                <h2 class="section-title">Mensagens Recebidas</h2>
+                <div class="mensagens-container">
+                    <div class="mensagens-filtros">
+                        <div class="form-group">
+                            <label for="filtro-tipo">Filtrar por tipo:</label>
+                            <select id="filtro-tipo">
+                                <option value="">Todos</option>
+                                <option value="nutricionista">Nutricionista</option>
+                                <option value="personal">Personal Trainer</option>
+                                <option value="medico">Médico</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filtro-status">Status:</label>
+                            <select id="filtro-status">
+                                <option value="">Todos</option>
+                                <option value="nova">Nova</option>
+                                <option value="lida">Lida</option>
+                                <option value="respondida">Respondida</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mensagens-lista">
+                        <div id="mensagens-tabela-container" class="tabela-container">
+                            <table id="mensagens-tabela">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Remetente</th>
+                                        <th>Tipo Profissional</th>
+                                        <th>Assunto</th>
+                                        <th>Contato</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Mensagens serão inseridas via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal para visualizar mensagem completa -->
+        <div id="mensagem-modal" class="modal">
+            <div class="modal-content modal-large">
+                <span class="close-modal">&times;</span>
+                <h2>Detalhes da Mensagem</h2>
+                <div id="mensagem-detalhes">
+                    <!-- Conteúdo será preenchido via JavaScript -->
+                </div>
+                <div class="mensagem-acoes">
+                    <button id="marcar-lida-btn" class="btn btn-outline">Marcar como Lida</button>
+                    <button id="marcar-respondida-btn" class="btn btn-primary">Marcar como Respondida</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Live Light</h2>
+                    <p>Sua jornada para uma vida mais saudável</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#calculadoras">Calculadoras</a></li>
+                        <li><a href="#historico">Histórico</a></li>
+                        <li><a href="#metas">Metas</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <p>Email: livelight@gmail.com</p>
+                    <p>Telefone: (11) 1234-5678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 - Live Light</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
