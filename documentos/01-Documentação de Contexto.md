@@ -50,3 +50,49 @@ Usuários Gerais: Pessoas de diferentes idades e condições físicas que buscam
 Profissionais de Saúde (Médicos, Nutricionistas, Personal Trainers): Profissionais que utilizam a calculadora para avaliar rapidamente a condição física de seus pacientes ou clientes. O IMC e a ingestão calórica diária ajuda a personalizar planos de saúde, nutrição e treinamento, com a possibilidade de gerar relatórios históricos e adaptar os resultados conforme as necessidades individuais. 
 
 A diversidade de públicos destaca a relevância e a utilidade do Live Light, que oferecendo informações essenciais para o monitoramento da saúde e bem-estar, além de ser uma ferramenta valiosa na melhoria da qualidade de vida.
+
+
+graph TD
+    subgraph P1 [PRIORIDADE ALTA - Segurança e Vida]
+        direction TB
+        RF1[RF-001: Cadastro Perfis]
+        RF2[RF-002: Cadastro Remédios]
+        RF3[RF-003: Alertas/Alarmes]
+        RF4[RF-004: Confirmação Dose]
+        RF5[RF-005: Notificação Familiar]
+        RF6[RF-006: Botão de Pânico]
+        style P1 fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+    end
+
+    subgraph P2 [PRIORIDADE MÉDIA - Gestão e Apoio]
+        direction TB
+        RF7[RF-007: Histórico Medicação]
+        RF8[RF-008: Busca Cuidadores]
+        RF9[RF-009: Perfil Cuidador]
+        RF10[RF-010: Solicitação/Aceite]
+        RF11[RF-011: Gestão Prestador]
+        RF12[RF-012: Relatório PDF]
+        RF13[RF-013: Vínculo Familiar]
+        style P2 fill:#fff4cc,stroke:#d4a017,stroke-width:2px
+    end
+
+    subgraph P3 [PRIORIDADE BAIXA - Conveniência]
+        direction TB
+        RF14[RF-014: Avaliação Cuidador]
+        RF15[RF-015: Chat/Comentários]
+        RF16[RF-016: Assinatura/Model Negócio]
+        RF17[RF-017: Mapa Cuidadores]
+        style P3 fill:#d5f5e3,stroke:#27ae60,stroke-width:2px
+    end
+
+    P1 ==> P2
+    P2 ==> P3
+
+    subgraph RNF [Base Técnica Crítica - RNF]
+        RNF1[RNF-001: Acessibilidade]
+        RNF2[RNF-002: Segurança/LGPD]
+        RNF3[RNF-003: Modo Offline]
+        style RNF fill:#e1f5fe,stroke:#01579b
+    end
+
+    RNF -.-> P1
